@@ -1,18 +1,13 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.jsoup.Jsoup;
-import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
@@ -20,9 +15,12 @@ import org.kohsuke.args4j.Option;
 
 public class Indexer {
   
+  /**
+   * command-line arguments for entry point
+   */
   @Option(name = "-index", aliases = "-i", required = true, 
-          usage = "Index file to save to (aka. output). Required option.")
-  private File indexFile;
+          usage = "Path to the directory to save index files (aka. output). Required option.")
+  private File indexDir;
 
   @Option(name = "-docs", aliases = "-d", required = true, 
           usage = "Path to the directory containing html files to search (aka. input). Required option.")
@@ -31,6 +29,28 @@ public class Indexer {
   @Option(name = "-help", aliases = "-h", required = false, 
           usage = "Print help text.")
   private boolean printHelp = false;
+  
+  /**
+   * Lucene indexer internal objects
+   */
+  private StandardAnalyzer analyzer; // analyzer for tokenizing text
+  private Directory index;           // the index
+  
+  /**
+   * Constructor for initializing the indexer
+   */
+  public Indexer() {
+    analyzer = new StandardAnalyzer();
+    try {
+      // Make a File-System-Index-Directory (i.e. an index on disk, as opposed to one in memory).
+      // FSDirectory.open() chooses the best FSDirectory implementation given the environment, 
+      // and the known limitations of each implementation.
+      index = FSDirectory.open(indexDir.toPath());  
+    } catch (IOException e) {
+      System.err.println("Error opening index directory" + indexDir);
+      e.printStackTrace();
+    }
+  }
   
   private int parseArgs(String[] args) {
     final CmdLineParser parser = new CmdLineParser(this);
