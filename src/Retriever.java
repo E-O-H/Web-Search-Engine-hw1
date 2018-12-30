@@ -75,6 +75,8 @@ public class Retriever {
    * Search the query string.
    */
   private int search() {
+    initialize();
+    
     // Build the Query object.
     // (The "text" arg specifies the default field to use
     // when no field is explicitly specified in the query.
@@ -93,20 +95,22 @@ public class Retriever {
       reader = DirectoryReader.open(index);
       searcher = new IndexSearcher(reader);
       docs = searcher.search(query, hitsPerPage);
+      
+      outputResults();
     } catch (IOException e) {
       System.err.println("Error opening index.");
       e.printStackTrace();
       return 2;
     }
     
-    outputResults();
     return 0;
   }
   
   /**
    * Output results
+   * @throws IOException 
    */
-  private void outputResults() {
+  private void outputResults() throws IOException {
     if (searcher.getIndexReader().maxDoc() == 0) {
       System.err.println("No document in the index!");
       return;
@@ -123,32 +127,18 @@ public class Retriever {
     System.out.println("<h1>Results for query <u>" + queryString + "</u> in directory <u>"
                        + htmlDirName + "</u></h1>");
     System.out.println("</head>");
-    
-    
-    
-    <body><p><b><i>1</i>. Web Search Engines: Lecture 3. Indexing and Query Engines</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\indexing.html</span></p>
-    <p><b><i>2</i>. Sentiment Analysis</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\SentimentAnalysis.html</span></p>
-    <p><b><i>3</i>. The Multi-Lingual Web</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\Multilingual.html</span></p>
-    <p><b><i>4</i>. Lecture 8: Invisible Web; Tables; Sentiment Analysis</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\lec8.html</span></p>
-    <p><b><i>5</i>. Media: Images and Music</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\Media.html</span></p>
-    <p><b><i>6</i>. Lecture 7: Clustering Algorithms</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\lecCluster2.html</span></p>
-    <p><b><i>7</i>. Searching for Software</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\Software.html</span></p>
-    <p><b><i>8</i>. Web Structure and Evolution</b><br><span style='margin-left:3em'>Prog1ExampleDirectory\Prog1ExampleDirectory\Webology.html</span></p>
-
-    </body>
-    </html>
+    System.out.println("<body>");
     
     ScoreDoc[] hits = docs.scoreDocs;
-    System.out.println("Found " + hits.length + " hits.");
-    for(int i=0;i<htis.length;++i) {
+    for(int i = 0; i < hits.length; ++i) {
         int docId = hits[i].doc;
-        Document d = searcher.doc(docId);
-        System.out.println((i + 1) + ". " + d.get("isbn") + "\t" + d.get("title"));
+        Document doc = searcher.doc(docId);
+        System.out.println("<p><b><i>" + (i + 1) + "</i>. " + doc.get("title") 
+                           + "</b><br><span style='margin-left:3em'>" + doc.get("path") + "</span></p>");
     }
-
-    // reader can only be closed when there
-    // is no need to access the documents any more.
-    reader.close();
+    
+    System.out.println("</body>");
+    System.out.println("</html>");
   }
   
   
@@ -176,6 +166,8 @@ public class Retriever {
     final Retriever retriever = new Retriever();
     int status;
     status = retriever.parseArgs(args);
+    if (status != 0) System.exit(status);
+    status = retriever.search();
     if (status != 0) System.exit(status);
   }
 }

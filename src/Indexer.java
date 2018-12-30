@@ -109,15 +109,17 @@ public class Indexer {
    * @param path the html file
    */
   private void processHtmlFile(Path path) {
-    String rawHtml;
+
     IndexWriterConfig config = new IndexWriterConfig(analyzer);
+    config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND); // Append to existing index
+                                                                     // instead of creating a new one
     try (IndexWriter indexWriter = new IndexWriter(index, config)) {
-      rawHtml = new String(Files.readAllBytes(path), "UTF-8");      // read html file
-      String tidyHtml = Jsoup.clean(rawHtml, Whitelist.relaxed());  // tidy up the html
-      org.jsoup.nodes.Document dom = Jsoup.parse(tidyHtml);         // parse html into DOM
+      String rawHtml = new String(Files.readAllBytes(path), "UTF-8"); // read html file
+      String tidyHtml = Jsoup.clean(rawHtml, Whitelist.relaxed());    // tidy up the html
+      org.jsoup.nodes.Document dom = Jsoup.parse(tidyHtml);           // parse html into DOM
       String title = getTitleOrSubtitle(dom);
       String text = dom.text();
-      
+
       addDoc(indexWriter, title, text, path.toString());
     } catch (IOException e) {
       System.err.println("Error opening html file" + path);
