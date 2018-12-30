@@ -166,6 +166,11 @@ public class Retriever {
     return 0;
   }
   
+  /**
+   * Retriever Entry point.
+   * 
+   * @param args command-line arguments
+   */
   public static void main(String[] args) {
     final Retriever retriever = new Retriever();
     int status;

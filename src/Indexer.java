@@ -166,6 +166,11 @@ public class Indexer {
     return 0;
   }
   
+  /**
+   * Indexer Entry point.
+   * 
+   * @param args command-line arguments
+   */
   public static void main(String[] args) {
     final Indexer indexer = new Indexer();
     int status;
