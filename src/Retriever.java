@@ -24,9 +24,11 @@ import org.kohsuke.args4j.Option;
  * 
  * <p>Searches the query terms in an on-disk index 
  * and output to stdout the search results in HTML format.</p>
+ * 
  * <p>Usage:<br>
  * Provide arguments for the entry point 
- * "-index INDEX_PATH -query QUERY_STRING" </p>
+ * "-index INDEX_PATH -query QUERY_STRING" 
+ * (options can be abbreviated)</p>
  * 
  * @author Chenyang Tang
  *

@@ -24,9 +24,11 @@ import org.kohsuke.args4j.Option;
  * <p>An HTML documents Indexer. </p>
  * 
  * <p>Builds an on-disk index for the given HTML files. </p>
+ * 
  * <p>Usage:<br>
  * Provide arguments for entry point 
- * "-index INDEX_PATH -docs DOCS_PATH" </p>
+ * "-index INDEX_PATH -docs DOCS_PATH" 
+ * (options can be abbreviated)</p>
  * 
  * @author Chenyang Tang
  *
