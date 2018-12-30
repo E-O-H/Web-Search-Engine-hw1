@@ -20,7 +20,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 /**
- * <p>Retriever class. Search the query terms in an on-disk index 
+ * <p>An index search query Retriever.</p>
+ * 
+ * <p>Searches the query terms in an on-disk index 
  * and output to stdout the search results in HTML format.</p>
  * <p>Usage:<br>
  * Provide arguments for the entry point 

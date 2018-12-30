@@ -21,7 +21,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 /**
- * <p>Indexer class. Build an on-disk index for the given HTML files </p>
+ * <p>An HTML documents Indexer. </p>
+ * 
+ * <p>Builds an on-disk index for the given HTML files. </p>
  * <p>Usage:<br>
  * Provide arguments for entry point 
  * "-index INDEX_PATH -docs DOCS_PATH" </p>
