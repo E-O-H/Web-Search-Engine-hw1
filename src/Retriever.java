@@ -111,7 +111,7 @@ public class Retriever {
   }
   
   /**
-   * Output results
+   * Output results as an HTML snippet
    * @throws IOException 
    */
   private void outputResults() throws IOException {
@@ -121,28 +121,23 @@ public class Retriever {
     }
     Path htmlDirName = Paths.get(searcher.doc(0).get("path")).getParent().getFileName();
     
-    System.out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"");
-    System.out.println("\"http://www.w3.org/TR/html4/loose.dtd\">");
-    System.out.println("<html>");
-    System.out.println("<head>");
-    System.out.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-    System.out.println("<title>Results for query " + queryString 
-                       + "in directory " + htmlDirName + "</title>");
-    System.out.println("<h1>Results for query <u>" + queryString + "</u> in directory <u>"
-                       + htmlDirName + "</u></h1>");
-    System.out.println("</head>");
-    System.out.println("<body>");
+    System.out.println("<h3>Results for query <u>" 
+                       + queryString 
+                       + "</u> in directory <u>"
+                       + htmlDirName 
+                       + "</u></h3>");
     
     ScoreDoc[] hits = docs.scoreDocs;
     for(int i = 0; i < hits.length; ++i) {
         int docId = hits[i].doc;
         Document doc = searcher.doc(docId);
-        System.out.println("<p><b><i>" + (i + 1) + "</i>. " + doc.get("title") 
-                           + "</b><br><span style='margin-left:3em'>" + doc.get("path") + "</span></p>");
+        System.out.println("<p><b><i>" 
+                           + (i + 1) 
+                           + "</i>. " 
+                           + doc.get("title") 
+                           + "</b><br><span style='margin-left:3em'>" 
+                           + doc.get("path") + "</span></p>");
     }
-    
-    System.out.println("</body>");
-    System.out.println("</html>");
   }
   
   
