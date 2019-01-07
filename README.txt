@@ -1,14 +1,14 @@
 To build index:
 
-$ classpath="D:/myJavaWorkspace/"
-$ java -cp "${classpath}args4j-2.33.jar;${classpath}jsoup-1.11.3/jsoup-1.11.3.jar;${classpath}lucene-6.6.0/core/lucene-core-6.6.0.jar;${classpath};bin;." Indexer -i INDEX_PATH -d HTML_PATH
+$ LIBRARY_PATH="lib"
+$ java -cp "${LIBRARY_PATH}/args4j-2.33.jar;${LIBRARY_PATH}/jsoup-1.11.3/jsoup-1.11.3.jar;${LIBRARY_PATH}/lucene-6.6.0/core/lucene-core-6.6.0.jar;${LIBRARY_PATH};bin;." Indexer -i INDEX_PATH -d HTML_PATH
 
-(Change classpath accordingly for external dependencies.)
+(Change LIBRARY_PATH accordingly if you put external dependencies in other locations. Note on Unix-like systems, ":" instead of ";" should be used as delimiter in java classpath.)
 
 To search index:
 
-$ java -cp "${classpath}args4j-2.33.jar;${classpath}jsoup-1.11.3/jsoup-1.11.3.jar;${classpath}lucene-6.6.0/core/lucene-core-6.6.0.jar;${classpath}lucene-6.6.0/queryparser/lucene-queryparser-6.6.0.jar;${classpath};bin;." Retriever -i INDEX_PATH -q QUERY_STRING
+$ java -cp "${LIBRARY_PATH}/args4j-2.33.jar;${LIBRARY_PATH}/jsoup-1.11.3/jsoup-1.11.3.jar;${LIBRARY_PATH}/lucene-6.6.0/core/lucene-core-6.6.0.jar;${LIBRARY_PATH}/lucene-6.6.0/queryparser/lucene-queryparser-6.6.0.jar;${LIBRARY_PATH};bin;." Retriever -i INDEX_PATH -q QUERY_STRING
 
-(Change classpath accordingly for external dependencies. Note multiple-word query string needs to be quoted.)
+(Note multiple-word query string needs to be quoted.)
 
 Use -h (-help) to print usage.
